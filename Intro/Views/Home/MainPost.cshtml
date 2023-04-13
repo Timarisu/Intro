@@ -1,0 +1,12 @@
+﻿@model Intro.Models.ViewModels.MainPostVM
+<main class="container">
+    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary">@Model.Blog.Category.Name @Model.Blog.Author</strong>
+            <img class="card-img-top img-fluid d-block mx-auto mb-3" src="@WC.ImagePath@Model.Blog.Image" alt="Card image cap">
+            <h1 class="mb-0 text-center">@Model.Blog.Name</h1>
+            <p class="card-text mb-auto text-center">@Html.Raw(Model.Blog.Description)</p>
+            <a asp-action="Index" class="btn btn-success w-100">Назад</a>
+        </div>
+    </div>
+</main>

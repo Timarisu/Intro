@@ -1,0 +1,122 @@
+﻿@model Intro.Models.ViewModels.BlogVM
+
+@{
+
+    var title = "Создать пост";
+
+}
+    <form method="post" enctype="multipart/form-data">
+        @if (Model.Blog.Id != 0)
+        {
+            title = "Изменить пост";
+            <input asp-for="Blog.Id " hidden />
+        }
+        <div class="border p-3">
+            <div class="form-group row">
+                <h2 class="text-info p1-3" >@title</h2>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Blog.Name"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="Blog.Name" class="form-control" />
+                            <span asp-validation-for="Blog.Name" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Blog.Description"></label>
+                        </div>
+                        <div class="col-8">
+                            <textarea asp-for="Blog.Description" class="form-control summernote"></textarea>
+                            <span asp-validation-for="Blog.Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            Изображение
+                        </div>
+                        <div class="col-8">
+                            <input type="file" name = "files" id="uploadBox" multiple class="form-control" />
+                            @*<span asp-validation-for="Blog.Image" class="text-danger"></span>*@
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Blog.Author"></label>
+                        </div>
+                        <div class="col-8">
+                            <input asp-for="Blog.Author" type="@Model.Blog.Author" value="@Model.ApplicationUser.NickName" /> 
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <label asp-for="Blog.CategoryId"></label>
+                        </div>
+                        <div class="col-8">
+                            <select asp-for="Blog.CategoryId" asp-items="@Model.CategorySelectList" class="form-control">
+                                <option disabled selected>--Выбери Категорию--</option>
+                            </select>
+                            <span asp-validation-for="Blog.CategoryId" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-8 offset-4 row">
+                            <div class="col">
+                                @if (Model.Blog.Id != 0)
+                                {
+                                    //update
+                                    <input type="submit" class="btn btn-info w-100" value="Обновить" />
+                                }
+                                else
+                                {
+                                //create
+                                    <input type="submit" onclick="return validateInput()" class="btn btn-primary w-100" value="Создать" />
+                                }
+                            </div>
+                            <div class="col">
+                                <a asp-action="Index" class="btn btn-success w-100">Назад</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    @* Keep this empty *@
+                    @if (Model.Blog.Id != 0)
+                    {
+                        <img src="@WC.ImagePath@Model.Blog.Image" width="100%" style="border-radius:5px" solid="#bbb" />
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+
+@section Scripts{
+    @{
+        <partialname ="_ValidationScriptsPartial" />
+    }
+    <script>
+        $(document).ready(function () {
+            $('.summernote').summernote({
+                height: 300,
+                minHeight: null,
+                maxHeight: null,
+                focus: true  
+            });
+        });
+        function validateInput() {
+            if (document.getElementById("uploadBox").value==""){
+                Swal.fire(
+                    'Ошибка!',
+                    'Загрузите Имадж!',
+                    'ошибка'
+                )
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
